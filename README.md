@@ -3,9 +3,8 @@
 <div align="center">
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/qsque/filament-translation-helper.svg?style=flat-square)](https://packagist.org/packages/qsque/filament-translation-helper)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/qsque/filament-translation-helper/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/qsque/filament-translation-helper/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/qsque/filament-translation-helper/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/qsque/filament-translation-helper/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/qsque/filament-translation-helper.svg?style=flat-square)](https://packagist.org/packages/qsque/filament-translation-helper)
+[![License](https://img.shields.io/packagist/l/qsque/filament-translation-helper.svg?style=flat-square)](https://packagist.org/packages/qsque/filament-translation-helper)
 
 **A powerful Filament plugin that provides automatic translations with intelligent fallback support for forms, tables, and resources.**
 
@@ -23,6 +22,7 @@
 - **📝 Zero Configuration**: Works out of the box without any setup
 - **🎨 Language Switcher**: Ready-to-use user menu item for your admin panel
 - **⚡ Laravel 11 & 12 Support**: Compatible with the latest Laravel versions
+- **🎯 Filament 4 Ready**: Built for the latest Filament architecture
 - **🔧 Highly Configurable**: Customize locales, fallbacks, and translation paths
 
 ## 🚀 Installation
@@ -41,27 +41,45 @@ That's it! The package works out of the box with zero configuration. 🎉
 
 Just use your forms and tables as usual - translations happen automatically:
 
+**Resource:**
 ```php
-use Filament\Resources\Resource;
+use Qsque\FilamentTranslationHelper\Resources\BaseResource;
 
-class UserResource extends Resource
+class UserResource extends BaseResource
 {
-    public static function form(Form $form): Form
-    {
-        return $form->schema([
-            TextInput::make('name'),        // → "Name" or translated
-            TextInput::make('email'),       // → "Email" or translated
-            TextInput::make('first_name'),  // → "First Name" or translated
-        ]);
-    }
+    protected static ?string $model = User::class;
+    
+    // Resource labels are automatically translated from:
+    // resources.user.label and resources.user.plural_label
+}
+```
 
-    public static function table(Table $table): Table
-    {
-        return $table->columns([
-            TextColumn::make('name'),       // → "Name" or translated
-            TextColumn::make('created_at'), // → "Created At" or translated
-        ]);
-    }
+**Form:**
+```php
+use Filament\Forms\Form;
+use Filament\Forms\Components\TextInput;
+
+public function form(Form $form): Form
+{
+    return $form->schema([
+        TextInput::make('name'),        // → "Name" or translated
+        TextInput::make('email'),       // → "Email" or translated
+        TextInput::make('first_name'),  // → "First Name" or translated
+    ]);
+}
+```
+
+**Table:**
+```php
+use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
+
+public function table(Table $table): Table
+{
+    return $table->columns([
+        TextColumn::make('name'),       // → "Name" or translated
+        TextColumn::make('created_at'), // → "Created At" or translated
+    ]);
 }
 ```
 
@@ -284,7 +302,6 @@ The package includes pre-built translations for common fields in multiple langua
 
 - **English** (en)
 - **Russian** (ru)
-- More languages coming soon!
 
 ### Publishing Package Translations
 
@@ -312,13 +329,14 @@ public function panel(Panel $panel): Panel
 
 ```php
 // You can also implement your own user menu item
-use Filament\Actions\Action;
+use Filament\Support\Facades\FilamentView;
+use Filament\Navigation\MenuItem;
 use Filament\Forms\Components\Radio;
 
-Action::make('language-switcher')
+MenuItem::make()
     ->label(config('filament-translation-helper.available_locales')[app()->getLocale()])
     ->icon('heroicon-o-language')
-    ->schema([
+    ->form([
         Radio::make('locale')
             ->options(config('filament-translation-helper.available_locales'))
             ->default(app()->getLocale())
@@ -335,7 +353,12 @@ Action::make('language-switcher')
 ### Form Example
 
 ```php
-public static function form(Form $form): Form
+use Filament\Forms\Form;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\Section;
+
+public function form(Form $form): Form
 {
     return $form->schema([
         Section::make('general') // → "General" or translated
@@ -358,7 +381,11 @@ public static function form(Form $form): Form
 ### Table Example
 
 ```php
-public static function table(Table $table): Table
+use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\BooleanColumn;
+
+public function table(Table $table): Table
 {
     return $table
         ->columns([
