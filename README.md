@@ -416,67 +416,6 @@ Run with coverage:
 composer test-coverage
 ```
 
-## 🔧 Troubleshooting
-
-### Common Issues
-
-**Q: Translations not working?**
-```bash
-# Clear cache
-php artisan config:cache
-php artisan view:clear
-
-# Check translation files exist
-ls -la lang/en/common.php
-```
-
-**Q: Custom translations not loading?**
-```php
-// Ensure translation files are in the correct format
-// lang/{locale}/common.php should return an array with 'fields' key
-```
-
-**Q: Language switcher not appearing?**
-```php
-// Make sure user menu item is registered
-public function panel(Panel $panel): Panel
-{
-    return $panel->userMenuItems([
-        LanguageSwitcher::getUserMenuItem(),
-    ]);
-}
-```
-
-### Debug Mode
-
-Enable debug mode to see translation lookup process:
-
-```php
-// In AppServiceProvider
-TranslationHelper::debug(true);
-```
-
-## 🤝 Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-### Development Setup
-
-```bash
-git clone https://github.com/qsque/filament-translation-helper.git
-cd filament-translation-helper
-composer install
-composer test
-```
-
-## 📋 Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## 🔒 Security
-
-Please review [our security policy](../../security/policy) for reporting vulnerabilities.
-
 ## 📄 License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
