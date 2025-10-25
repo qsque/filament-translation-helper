@@ -4,6 +4,7 @@ namespace Qsque\FilamentTranslationHelper\Components;
 
 use Filament\Actions\Action;
 use Filament\Forms\Components\Radio;
+use Filament\Support\Icons\Heroicon;
 
 class LanguageSwitcher
 {
@@ -15,7 +16,7 @@ class LanguageSwitcher
 
         return Action::make('language-switcher')
             ->label($currentLabel)
-            ->icon('hero"""icon-o-language')
+            ->icon(Heroicon::Language)
             ->schema([
                 Radio::make('locale')
                     ->options($availableLocales)
