@@ -8,7 +8,7 @@
 
 **A powerful Filament plugin that provides automatic translations with intelligent fallback support for forms, tables, and resources.**
 
-[Installation](#-installation) • [Quick Start](#-quick-start) • [Features](#-features) • [Documentation](#-documentation)
+[Installation](#-installation) • [Quick Start](#-quick-start) • [Features](#-features)
 
 </div>
 
@@ -400,20 +400,6 @@ public function table(Table $table): Table
                 ->dateTime(),
         ]);
 }
-```
-
-## 🧪 Testing
-
-Run the test suite:
-
-```bash
-composer test
-```
-
-Run with coverage:
-
-```bash
-composer test-coverage
 ```
 
 ## 📄 License

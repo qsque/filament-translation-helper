@@ -1,6 +1,6 @@
 {
     "name": "qsque/filament-translation-helper",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "A Filament plugin that provides automatic translations with fallback support for resources, forms and tables",
     "keywords": [
         "filament",
